@@ -2,7 +2,10 @@ const fs = require('fs');
  
 fs.readFile('inputs/day2.txt', 'utf8', (err, contents) => {
     var values = contents.split('\n').filter(value => value.length > 0);
+    checksum(values);
+});
 
+function checksum(values) {
     var twoTimes = 0;
     var threeTimes = 0;
 
@@ -18,7 +21,7 @@ fs.readFile('inputs/day2.txt', 'utf8', (err, contents) => {
 
     var checksum = twoTimes * threeTimes;
     console.log(checksum);
-});
+}
 
 function countRepeatCharacters(string) {
     var counts = {};
