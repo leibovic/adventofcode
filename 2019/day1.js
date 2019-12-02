@@ -6,9 +6,17 @@ fs.readFile('inputs/day1.txt', 'utf8', (err, contents) => {
     console.log(sum);
 });
 
-const sumFuelRequirements = (values) => {
-    const getFuel = (mass) => {
-        return Math.floor(parseInt(mass)/3) - 2;
+const getFuel = (mass) => {
+    const fuel = Math.floor(parseInt(mass)/3) - 2;
+    if (fuel <= 0) {
+        return 0;
     }
-    return values.reduce((accumulator, currentValue) => accumulator + getFuel(currentValue), 0);
+    return fuel + getFuel(fuel);
+}
+
+const sumFuelRequirements = (values) => {
+    return values.reduce((accumulator, currentValue) => {
+        const fuel = getFuel(currentValue);
+        return accumulator + fuel;
+    }, 0);
 }
