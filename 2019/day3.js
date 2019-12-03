@@ -5,20 +5,18 @@ fs.readFile('inputs/day3.txt', 'utf8', (err, contents) => {
     const path1 = values[0].split(',');
     const path2 = values[1].split(',');
 
-    const grid = {};
+    const points = {};
 
-    mapPathToGrid(path1, grid);
-    mapPathToGrid(path2, grid, true);
+    storePointsForPath(path1, points, 1);
+    storePointsForPath(path2, points, 2);
 
     let shortestDistance = null;
-    for (let x in grid) {
-        let row = grid[x];
-        for (let y in row) {
-            if (row[y] === 2) {
-                let distance = Math.abs(x) + Math.abs(y);
-                if (distance !== 0 && (distance < shortestDistance || shortestDistance === null)) {
-                    shortestDistance = distance;
-                }
+    for (let point in points) {
+        if (points[point].length === 2) {
+            let xy = point.split(",");
+            let distance = Math.abs(xy[0]) + Math.abs(xy[1]);
+            if (distance !== 0 && (distance < shortestDistance || shortestDistance === null)) {
+                shortestDistance = distance;
             }
         }
     }
@@ -26,26 +24,23 @@ fs.readFile('inputs/day3.txt', 'utf8', (err, contents) => {
     console.log(shortestDistance);
 });
 
-const mapPathToGrid = (path, grid, markIntersections) => {
+const storePointsForPath = (path, points, id) => {
     let x = 0;
     let y = 0;
+
     for (let i = 0; i < path.length; i++) {
         let chunk = path[i];
         let direction = chunk.substring(0, 1);
         let distance = parseInt(chunk.substring(1));
 
         for (let j = 0; j < distance; j++) {
-            if (!grid[x]) {
-                grid[x] = {};
+            let point = [x, y].join(",");
+            if (!points[point]) {
+                points[point] = [];
             }
 
-            if (markIntersections) {
-                if (grid[x][y] === 1) {
-                    grid[x][y] = 2;
-                }
-            } else {
-                // Don't mark with the second wire
-                grid[x][y] = 1;
+            if (!points[point].includes(id)) {
+                points[point].push(id);
             }
 
             if (direction === "D") {
