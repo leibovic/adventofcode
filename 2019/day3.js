@@ -38,9 +38,13 @@ const mapPathToGrid = (path, grid, markIntersections) => {
             if (!grid[x]) {
                 grid[x] = {};
             }
-            if (markIntersections && grid[x][y] === 1) {
-                grid[x][y] = 2;
+
+            if (markIntersections) {
+                if (grid[x][y] === 1) {
+                    grid[x][y] = 2;
+                }
             } else {
+                // Don't mark with the second wire
                 grid[x][y] = 1;
             }
 
