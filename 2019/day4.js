@@ -30,8 +30,10 @@ const alwaysIncreasing = (chars) => {
 
 const hasTwoAdjacentDigits = (chars) => {
     for (let i = 0; i < chars.length - 1; i++) {
-        if (chars[i] == chars[i+1]) {
-            return true;
+        if (chars[i] === chars[i+1]) {
+            if (chars[i+2] !== chars[i] && chars[i-1] !== chars[i]) {
+                return true;
+            }
         }
     }
     return false;
