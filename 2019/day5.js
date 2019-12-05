@@ -3,7 +3,7 @@ const fs = require('fs');
 fs.readFile('inputs/day5.txt', 'utf8', (err, contents) => {
     const values = contents.split(',').map(value => parseInt(value));
     
-    runIntcodeProgram(values, 1);
+    runIntcodeProgram(values, 5);
 });
 
 
@@ -21,23 +21,39 @@ const runIntcodeProgram = (values, input) => {
         const param2 = values[currentPosition + 2];
         const param3 = values[currentPosition + 3];
 
-        if (opcode === 1 || opcode === 2) {
-            const value1 = modeParam1 === 0 ? values[param1] : param1;
-            const value2 = modeParam2 === 0 ? values[param2] : param2;
-            if (opcode === 1) {
-                values[param3] = value1 + value2;
-            } else {
-                values[param3] = value1 * value2;
-            }
+        const value1 = modeParam1 === 0 ? values[param1] : param1;
+        const value2 = modeParam2 === 0 ? values[param2] : param2;
+
+        if (opcode === 1) {
+            values[param3] = value1 + value2;
             currentPosition += 4;
-        } else if (opcode === 3 || opcode === 4) {
-            if (opcode === 3) {
-                values[param1] = input;
-            } else {
-                const value = modeParam1 === 0 ? values[param1] : param1;
-                console.log(value);
-            }
+        } else if (opcode === 2) {
+            values[param3] = value1 * value2;
+            currentPosition += 4;
+        } else if (opcode === 3) {
+            values[param1] = input;
             currentPosition += 2;
+        } else if (opcode === 4) {
+            console.log(value1);
+            currentPosition += 2;
+        } else if (opcode === 5) {
+            if (value1 !== 0) {
+                currentPosition = value2;
+            } else {
+                currentPosition += 3;
+            }
+        } else if (opcode === 6) {
+            if (value1 === 0) {
+                currentPosition = value2;
+            } else {
+                currentPosition += 3;
+            }
+        } else if (opcode === 7) {
+            values[param3] = value1 < value2 ? 1 : 0;
+            currentPosition += 4;
+        } else if (opcode === 8) {
+            values[param3] = value1 === value2 ? 1 : 0;
+            currentPosition += 4;
         } else {
             throw "unknown opcode: " + opcode;
         }
