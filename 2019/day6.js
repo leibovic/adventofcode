@@ -9,10 +9,8 @@ fs.readFile('inputs/day6.txt', 'utf8', (err, contents) => {
         const nodes = values[i].split(")");
         const inner = nodes[0];
         const outer = nodes[1];
-        if (!orbits[inner]) {
-            orbits[inner] = [];
-        }
-        orbits[inner].push(outer);
+
+        orbits[outer] = inner;
     }
     
     let totalOrbits = 0;
@@ -27,8 +25,5 @@ const sumOrbits = (node) => {
     if (!orbits[node]) {
         return 0;
     }
-
-    return orbits[node].length + orbits[node].reduce((accumulator, currentNode) => {
-        return accumulator + sumOrbits(currentNode);
-    }, 0);
+    return 1 + sumOrbits(orbits[node]);
 }
