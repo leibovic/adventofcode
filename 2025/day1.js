@@ -15,21 +15,36 @@ const countZeros = (rotations) => {
   let currentValue = 50;
 
   rotations.forEach((rotation) => {
+    console.log("Start position: " + currentValue);
+    console.log("Rotation: " + rotation);
+
     const direction = rotation.charAt(0);
     const clicks = parseInt(rotation.slice(1), 10);
 
-    if (direction === "L") {
-      currentValue = currentValue - clicks;
-    } else {
-      currentValue = currentValue + clicks;
+    let timesPastZero = 0;
+    // Brute force that shit!
+    for (let i = 0; i < clicks; i++) {
+      if (direction === "L") {
+        currentValue -= 1;
+      } else {
+        currentValue += 1;
+      }
+
+      if (currentValue == -1) {
+        currentValue = 99;
+      } else if (currentValue == 100) {
+        currentValue = 0;
+      }
+
+      if (currentValue == 0) {
+        timesPastZero++;
+      }
     }
 
-    currentValue = ((currentValue % 100) + 100) % 100;
+    zeroCount += timesPastZero;
 
-    console.log(currentValue);
-    if (currentValue == 0) {
-      zeroCount += 1;
-    }
+    console.log("New value: " + currentValue);
+    console.log("--------------------");
   });
 
   return zeroCount;
